@@ -1,21 +1,21 @@
 # CSVCount
-PHP script mimicking basic functionality of the coreutils wc -l, for CSV files. I have done this for fun, but it's worth noting `fgetcsv` is really REALLY slow. If you need to count the number of records of big CSV files, go with this Python oneliner:
+PHP script mimicking basic functionality of the coreutils `wc -l`, for CSV files. I have done this for fun, but it's worth noting `fgetcsv` is really REALLY slow. If you need to count the number of records of big CSV files, go with this Python oneliner:
 
 ```
 cat * | python -c "import csv; import sys; print(sum(1 for i in csv.reader(sys.stdin)))"
 ```
 
 ## Installation
-Clone the repository, copy the script file into your path (/home/user/bin, /home/user/.local/bin, /usr/local/bin, ...) and assign execute permission:
+Clone the repository, copy the script file to your path `(/home/<user>/bin, /home/<user>/.local/bin, /usr/local/bin, ...)` and assign execute permission:
 ```
 git clone https://github.com/dhulke/CSVCount.git
 mkdir /home/<user>/bin
 cd CSVCount
-cp csvcount /home/user/bin/csvcount
+cp csvcount /home/<user>/bin/csvcount
 ```
 
 ## Usage
-Use it as you would wc -l, but for CSV files:
+Use it as you would `wc -l`, but for CSV files:
 
 ```
 echo 'column1, column2, column3
