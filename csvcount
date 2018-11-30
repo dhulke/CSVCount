@@ -1,0 +1,49 @@
+#!/usr/bin/env php
+<?php
+
+class CSVCount {
+
+	const DEFAULT_LPAD = 1;
+
+	public static function main($argc, $argv) {
+		if($argc === 1 || $argv[1] === '-')
+			self::stdin();
+		elseif($argc === 2)
+			self::oneArg($argv[1]);
+		elseif($argc > 2)
+			self::manyArgs(array_slice($argv, 1));
+	}
+
+	public static function stdin() {
+		echo self::countRecords(STDIN) . "\n";
+	}
+
+	public static function oneArg($arg, $lpad=0) {
+		$count = self::countRecords(fopen($arg, 'r'));
+		printf("%{$lpad}s %s\n", $count, $arg);
+		return $count;
+	}
+
+	public static function countRecords($fp) {
+		for($count = 0; fgetcsv($fp); $count++);
+		return $count;
+	}
+
+	public static function manyArgs($args) {
+		$lpad = self::compute_lpad($args);
+		for($i = $totalRecords = 0, $argc = count($args);
+			$i < $argc;
+			$totalRecords += self::oneArg($args[$i], $lpad), $i++);
+		printf("%{$lpad}s total\n", $totalRecords);
+	}
+
+	public static function compute_lpad($args) {
+		for($i = $totalSize = 0, $argc = count($args);
+			$i < $argc;
+			$totalSize += filesize($args[$i]), $i++);
+		for($lpad = 1; $totalSize >= 10; $totalSize /= 10, $lpad++);
+		return $lpad > self::DEFAULT_LPAD ? $lpad : self::DEFAULT_LPAD;
+	}
+}
+
+CSVCount::main(count($argv), $argv);
